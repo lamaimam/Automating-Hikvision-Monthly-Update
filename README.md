@@ -9,7 +9,7 @@ For each working day (Sun–Thu in Saudi) of the target month, per employee:
 | Hikvision shows                    | Leave system says    | Result                                                         |
 | ---------------------------------- | -------------------- | -------------------------------------------------------------- |
 | Nothing                            | On approved leave    | Absent (excused)                                               |
-| Nothing                            | No leave             | Absent (unexcused)                                             |
+| Nothing                            | No leave             | Not Absent                                                     |
 | Check-in only                      | No leave             | Present, no overtime (Hikvision auto-closes at +15h)           |
 | Check-in + check-out, < 9h         | No leave             | Present, no overtime                                           |
 | Check-in + check-out, ≥ 9h         | No leave             | Present + overtime (capped at 6h beyond the 9h standard day)   |
@@ -34,23 +34,15 @@ mailer.py               — Zoho Mail API sender + HTML body builder
 main.py                 — Orchestrates everything
 ```
 
-## Setup
-
-```bash
-cd /Users/anwabiosciences/Desktop/zoho_contacts
-source venv/bin/activate
-cd /path/to/this/folder
-pip install -r requirements.txt
-```
 
 ## Configuration checklist
 
 Edit `config.py` (or set environment variables) with:
 
 ### Hikvision (blocked on installer credentials)
-- `HIKVISION_HOST` — currently `192.168.8.11`
-- `HIKVISION_USER`, `HIKVISION_PASS` — admin credentials from the installer
-- **Verify `HIKVISION_MAJOR_EVENT_TYPE` / `HIKVISION_MINOR_EVENT_TYPE`** against your device's actual event log. Different firmwares use different codes. The values in config (5/75) are the most common but not universal.
+- `HIKVISION_HOST` — `000.000.000.000`
+- `HIKVISION_USER`, `HIKVISION_PASS` — admin credentials
+- **Verify `HIKVISION_MAJOR_EVENT_TYPE` / `HIKVISION_MINOR_EVENT_TYPE`** against your device's actual event log. Different firmwares use different codes.
 
 ### Zoho OAuth
 Generate at https://api-console.zoho.com (Self Client flow):
@@ -101,7 +93,7 @@ It will process both months unconditionally and email the recipient.
 Set `config.BACKFILL_MODE = False`, then schedule:
 
 ```cron
-0 6 * * * cd /path/to/payroll && /Users/anwabiosciences/Desktop/zoho_contacts/venv/bin/python main.py
+0 6 * * * cd /path/to/payroll main.py
 ```
 
 (6:00 UTC = 9:00 AM Riyadh). The script self-gates:
