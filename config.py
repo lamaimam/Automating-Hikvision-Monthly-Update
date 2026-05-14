@@ -26,7 +26,7 @@ OVERTIME_CAP_HOURS = HIKVISION_AUTO_CHECKOUT_HOURS - STANDARD_WORKDAY_HOURS  # 6
 # ============================================================================
 # HIKVISION (ISAPI direct from device)
 # ============================================================================
-HIKVISION_HOST = os.getenv("HIKVISION_HOST", "REPLACE_ME") #e.g. 000.00.00.00
+HIKVISION_HOST = os.getenv("HIKVISION_HOST", "REPLACE_ME") #e.g. 000.000.000.000
 HIKVISION_PORT = int(os.getenv("HIKVISION_PORT", "80"))
 HIKVISION_USER = os.getenv("HIKVISION_USER", "admin")
 HIKVISION_PASS = os.getenv("HIKVISION_PASS", "REPLACE_ME")  # blocked on installer
