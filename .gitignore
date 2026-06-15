@@ -1,0 +1,10 @@
+config.py
+scheduler_state.json
+.venv/
+logs/
+*.log
+salary_dates/
+__pycache__/
+*.pyc
+*.xlsx
+*.csv

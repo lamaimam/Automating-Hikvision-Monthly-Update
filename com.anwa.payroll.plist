@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Anwa payroll scheduler - launchd configuration.
+
+  Install location:  ~/Library/LaunchAgents/com.anwa.payroll.plist
+
+  This plist fires the scheduler script on a fixed monthly pattern:
+    - Day 18, 09:00 - send prompt email
+    - Day 18, 20:00 - first IMAP reply check
+    - Day 19, 20:00 - fallback IMAP reply check
+    - Day 20-31, 09:00 - daily wake-up (NOOPs unless today = chosen send day)
+
+  The "day 20-31 at 09:00" entries are needed because we don't know in
+  advance which day the user will pick. They're cheap: the scheduler
+  reads the state file, sees there's nothing to do, and exits in <1 sec.
+  Only the one matching the chosen day will actually run the pipeline.
+
+  If the Mac is asleep when a scheduled time hits, launchd queues the
+  job and runs it as soon as the Mac wakes up (default behavior of
+  StartCalendarInterval).
+
+  Install:
+    cp com.anwa.payroll.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.anwa.payroll.plist
+
+  Uninstall:
+    launchctl unload ~/Library/LaunchAgents/com.anwa.payroll.plist
+    rm ~/Library/LaunchAgents/com.anwa.payroll.plist
+
+  Test manually:
+    launchctl start com.anwa.payroll
+  (Reads stdout/stderr to ~/Library/Logs/com.anwa.payroll.{out,err}.log)
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.anwa.payroll</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <!-- IMPORTANT: edit these two paths to match your setup -->
+        <string>/Users/anwabiosciences/PycharmProjects/PythonProject6/venv/bin/python</string>
+        <string>/Users/anwabiosciences/PycharmProjects/PythonProject6/files/scheduler.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/anwabiosciences/PycharmProjects/PythonProject6/files</string>
+
+    <key>StandardOutPath</key>
+    <string>/Users/anwabiosciences/Library/Logs/com.anwa.payroll.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/anwabiosciences/Library/Logs/com.anwa.payroll.err.log</string>
+
+    <key>StartCalendarInterval</key>
+    <array>
+        <!-- Day 18, 09:00 - send prompt -->
+        <dict>
+            <key>Day</key><integer>18</integer>
+            <key>Hour</key><integer>9</integer>
+            <key>Minute</key><integer>0</integer>
+        </dict>
+
+        <!-- Day 18, 20:00 - first IMAP reply check -->
+        <dict>
+            <key>Day</key><integer>18</integer>
+            <key>Hour</key><integer>20</integer>
+            <key>Minute</key><integer>0</integer>
+        </dict>
+
+        <!-- Day 19, 20:00 - fallback IMAP reply check -->
+        <dict>
+            <key>Day</key><integer>19</integer>
+            <key>Hour</key><integer>20</integer>
+            <key>Minute</key><integer>0</integer>
+        </dict>
+
+        <!-- Days 20-31, 09:00 - pipeline-day wake-up
+             (NOOP for all but the one matching chosen day) -->
+        <dict><key>Day</key><integer>20</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>21</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>22</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>23</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>24</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>25</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>26</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>27</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>28</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>29</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>30</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+        <dict><key>Day</key><integer>31</integer><key>Hour</key><integer>9</integer><key>Minute</key><integer>0</integer></dict>
+    </array>
+
+    <!-- If a scheduled time was missed because the Mac was off, run on
+         next wake. This is the default but we set it explicitly. -->
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
