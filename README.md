@@ -46,7 +46,7 @@ payroll_period.py
 Edit `config.py` (or set environment variables) with:
 
 ### Hikvision (blocked on installer credentials)
-- `HIKVISION_HOST` — currently `192.168.8.11`
+- `HIKVISION_HOST`
 - `HIKVISION_USER`, `HIKVISION_PASS` — admin credentials from the installer
 - **Verify `HIKVISION_MAJOR_EVENT_TYPE` / `HIKVISION_MINOR_EVENT_TYPE`** against your device's actual event log. Different firmwares use different codes. The values in config (5/75) are the most common but not universal.
 
