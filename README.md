@@ -18,7 +18,7 @@ For each working day (Sun–Thu in Saudi) of the target month, per employee:
 Saeed's preferences applied:
 - Earliest check-in + latest check-out (middle taps ignored)
 - 9h standard workday, 6h overtime cap (=15h Hikvision auto-checkout)
-- Outputs appended to a master Zoho Sheet + email to `lalturki20@gmail.com`
+- Outputs appended to a master Zoho Sheet + email
 
 ## File map
 
