@@ -1,4 +1,4 @@
-# Anwa BioSciences — Payroll Attendance Reconciliation
+#Payroll Attendance Reconciliation
 
 Reconciles Hikvision device attendance against Zoho People leave records to compute overtime payroll, then appends results to a master Zoho Sheet and emails the recipient.
 
@@ -40,12 +40,6 @@ payroll_period.py
 
 ## Setup
 
-```bash
-cd /Users/anwabiosciences/Desktop/zoho_contacts
-source venv/bin/activate
-cd /path/to/this/folder
-pip install -r requirements.txt
-```
 
 ## Configuration checklist
 
@@ -104,9 +98,7 @@ It will process both months unconditionally and email the recipient.
 ### Recurring mode (after backfill verified)
 Set `config.BACKFILL_MODE = False`, then schedule:
 
-```cron
-0 6 * * * cd /path/to/payroll && /Users/anwabiosciences/Desktop/zoho_contacts/venv/bin/python main.py
-```
+
 
 (6:00 UTC = 9:00 AM Riyadh). The script self-gates:
 1. Returns immediately if today's day-of-month is outside 21–29
